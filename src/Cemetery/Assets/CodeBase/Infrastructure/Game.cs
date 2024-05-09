@@ -7,19 +7,15 @@ namespace CodeBase.Infrastructure
     {
         public static IInputService InputService;
 
-        public Game()
-        {
-            RegisterInputService();
-        }
+        public Game() => 
+            InitializeInputService();
 
-        private static void RegisterInputService()
+        private static void InitializeInputService()
         {
             if (Application.isEditor)
                 InputService = new StandaloneInputService();
             else
-            {
                 InputService = new MobileInputService();
-            }
         }
     }
 }
