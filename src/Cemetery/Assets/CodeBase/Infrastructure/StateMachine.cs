@@ -5,24 +5,39 @@ namespace CodeBase.Infrastructure
 {
     public class StateMachine
     {
-        private readonly Dictionary<Type, IState> _states;
-        private IState _activeState;
+        private readonly Dictionary<Type, IExitableState> _states;
+        private IExitableState _activeState;
 
         public StateMachine(SceneLoader sceneLoader)
         {
-            _states = new Dictionary<Type, IState>
+            _states = new Dictionary<Type, IExitableState>
             {
                 [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader)
             };
         }
         
-        public void Enter<TState>() where TState : IState
+        public void Enter<TState>() where TState : class, IState
         {
-            _activeState?.Exit();
-            var state = _states[typeof(TState)];
-            _activeState = state;
+            var state = ChangeState<TState>();
             state.Enter();
         }
+
+        public void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayloadedState<TPayload>
+        {
+            var state = ChangeState<TState>();
+            state.Enter(payload);
+        }
+
+        private TState ChangeState<TState>() where TState : class, IExitableState
+        {
+            _activeState?.Exit();
+            var state = GetState<TState>();
+            _activeState = state;
+            return state;
+        }
+
+        private TState GetState<TState>() where TState : class, IExitableState => 
+            _states[typeof(TState)] as TState;
     }
 }
