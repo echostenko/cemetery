@@ -1,5 +1,4 @@
 using CodeBase.Services.Input;
-using UnityEngine;
 
 namespace CodeBase.Infrastructure
 {
@@ -8,9 +7,7 @@ namespace CodeBase.Infrastructure
         public readonly StateMachine StateMachine;
         public static IInputService InputService;
 
-        public Game()
-        {
-            StateMachine = new StateMachine();
-        }
+        public Game(SceneLoader sceneLoader) => 
+            StateMachine = new StateMachine(sceneLoader);
     }
 }

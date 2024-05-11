@@ -5,19 +5,30 @@ using UnityEngine;
 
 public class BootstrapState : IState
 {
+    private const string Initial = "Initial";
+    
     private readonly StateMachine _stateMachine;
+    private readonly SceneLoader _sceneLoader;
 
-    public BootstrapState(StateMachine stateMachine) => 
-        _stateMachine = stateMachine;
-
-    public void Enter() => 
-        RegisterServices();
-
-    public void Exit()
+    public BootstrapState(StateMachine stateMachine, SceneLoader sceneLoader)
     {
-        throw new NotImplementedException();
+        _stateMachine = stateMachine;
+        _sceneLoader = sceneLoader;
+    }
+
+    public void Enter()
+    {
+        RegisterServices();
+        _sceneLoader.Load(Initial, onLoaded: OnLoadLevel);
     }
     
+    public void Exit()
+    {
+    }
+
+    private void OnLoadLevel() => 
+        _stateMachine.Enter<LoadLevelState>();
+
     private void RegisterServices() => 
         Game.InputService = InitializeInputService();
 
