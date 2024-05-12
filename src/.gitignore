@@ -4,11 +4,14 @@ src/Cemetery/.vs
 src/Cemetery/Temp
 
 src/Cemetery/Library
+src/Cemetery/Logs
 src/Cemetery/.idea
 src/Cemetery/Assembly-CSharp.csproj
 src/Cemetery/Assembly-CSharp-Editor.csproj
 src/Cemetery/KnowledgeIsPower.sln
 src/Cemetery/KnowledgeIsPower.csproj
+src/Cemetery/Cemetery.sln
+src/Cemetery/Cemetery.csproj
 src/Cemetery/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll
 
 src/Cemetery/obj
