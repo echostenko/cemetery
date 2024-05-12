@@ -26,11 +26,12 @@ namespace CodeBase.Infrastructure
 
         private void OnLoaded()
         {
-            var hero =  Instantiate(HeroPath);
+            var spawnPoint = GameObject.FindWithTag("InitialPoint");
+            var hero =  Instantiate(HeroPath, spawnPoint.transform.position);
             Instantiate(HudPath);
             CameraFollow(hero);
         }
-        
+
         private void CameraFollow(GameObject hero)
         {
             Camera.main
@@ -42,6 +43,12 @@ namespace CodeBase.Infrastructure
         {
             var prefab = Resources.Load<GameObject>(path);
             return Object.Instantiate(prefab);
+        }
+
+        private GameObject Instantiate(string path, Vector3 spawnPoint)
+        {
+            var prefab = Resources.Load<GameObject>(path);
+            return Object.Instantiate(prefab, spawnPoint, Quaternion.identity);
         }
     }
 }
