@@ -1,5 +1,4 @@
-﻿/*using System;
-using BrunoMikoski.AnimationSequencer;
+﻿using BrunoMikoski.AnimationSequencer;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure
@@ -24,4 +23,4 @@ namespace CodeBase.Infrastructure
             gameObject.SetActive(false);
         }
     }
-}*/
+}
