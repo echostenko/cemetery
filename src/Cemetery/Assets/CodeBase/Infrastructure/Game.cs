@@ -1,13 +1,13 @@
-using CodeBase.Services.Input;
+using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.States;
 
 namespace CodeBase.Infrastructure
 {
     public class Game
     {
         public readonly StateMachine StateMachine;
-        public static IInputService InputService;
 
         public Game(SceneLoader sceneLoader, Fade fade) => 
-            StateMachine = new StateMachine(sceneLoader, fade);
+            StateMachine = new StateMachine(sceneLoader, fade, AllServices.Container);
     }
 }
