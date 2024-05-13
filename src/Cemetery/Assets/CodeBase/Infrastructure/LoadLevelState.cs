@@ -10,26 +10,30 @@ namespace CodeBase.Infrastructure
         
         private readonly StateMachine _stateMachine;
         private readonly SceneLoader _sceneLoader;
+        private readonly Fade _fade;
 
-        public LoadLevelState(StateMachine stateMachine, SceneLoader sceneLoader)
+        public LoadLevelState(StateMachine stateMachine, SceneLoader sceneLoader, Fade fade)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
+            _fade = fade;
         }
 
         public void Enter(string sceneName) => 
             _sceneLoader.Load(sceneName, OnLoaded);
 
-        public void Exit()
-        {
-        }
+        public void Exit() => 
+            _fade.Hide();
 
         private void OnLoaded()
         {
             var spawnPoint = GameObject.FindWithTag("InitialPoint");
             var hero =  Instantiate(HeroPath, spawnPoint.transform.position);
+            
             Instantiate(HudPath);
             CameraFollow(hero);
+            
+            _stateMachine.Enter<GameLoopState>();
         }
 
         private void CameraFollow(GameObject hero)

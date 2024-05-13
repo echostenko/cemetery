@@ -17,10 +17,7 @@ namespace CodeBase.Infrastructure
             showTweens.Play();
         }
 
-        public void Hide()
-        {
-            hideTweens.Play();
-            gameObject.SetActive(false);
-        }
+        public void Hide() => 
+            hideTweens.Play(() => gameObject.SetActive(false));
     }
 }

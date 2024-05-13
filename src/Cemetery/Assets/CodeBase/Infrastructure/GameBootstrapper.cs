@@ -4,11 +4,13 @@ namespace CodeBase.Infrastructure
 {
     public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     {
+        [SerializeField] private Fade fade;
+        
         private Game _game;
 
         private void Awake()
         {
-            _game = new Game(new SceneLoader(this));
+            _game = new Game(new SceneLoader(this), fade);
             _game.StateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);
