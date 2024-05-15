@@ -1,16 +1,18 @@
 ﻿using System;
-using CodeBase.CameraLogic;
-using CodeBase.Infrastructure;
+using CodeBase.Data;
 using CodeBase.Infrastructure.Services;
-using CodeBase.Services.Input;
+using CodeBase.Infrastructure.Services.Input;
+using CodeBase.Infrastructure.Services.PersistentProgress;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CodeBase.Hero
 {
-    public class HeroMove : MonoBehaviour
+    public class HeroMove : MonoBehaviour, ISavedProgress
     {
-        public CharacterController CharacterController;
-        public float MovementSpeed = 4.0f;
+        [SerializeField] private CharacterController characterController;
+        [SerializeField] private float MovementSpeed = 4.0f;
+        
         private IInputService _inputService;
 
         private void Awake() => 
@@ -32,7 +34,33 @@ namespace CodeBase.Hero
 
             movementVector += Physics.gravity;
             
-            CharacterController.Move(MovementSpeed * movementVector * Time.deltaTime);
+            characterController.Move(MovementSpeed * movementVector * Time.deltaTime);
         }
+
+        public void UpdateProgress(PlayerProgress playerProgress) => 
+            playerProgress.WorldData.PositionOnLevel = new PositionOnLevel(transform.position.AsVectorData(), GetCurrentLevel());
+
+        public void LoadProgress(PlayerProgress playerProgress)
+        {
+            if (playerProgress.WorldData.PositionOnLevel.Level == GetCurrentLevel())
+            {
+                var savedPosition = playerProgress.WorldData.PositionOnLevel.Position;
+                
+                if (savedPosition != null) 
+                    Warp(to: savedPosition);
+            }
+            
+            throw new NotImplementedException();
+        }
+
+        private void Warp(Vector3Data to)
+        {
+            characterController.enabled = false;
+            transform.position = to.AsUnityVector();
+            characterController.enabled = true;
+        }
+
+        private static string GetCurrentLevel() => 
+            SceneManager.GetActiveScene().name;
     }
 }
