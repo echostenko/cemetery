@@ -49,14 +49,12 @@ namespace CodeBase.Hero
                 if (savedPosition != null) 
                     Warp(to: savedPosition);
             }
-            
-            throw new NotImplementedException();
         }
 
         private void Warp(Vector3Data to)
         {
             characterController.enabled = false;
-            transform.position = to.AsUnityVector();
+            transform.position = to.AsUnityVector().AddY(characterController.height);
             characterController.enabled = true;
         }
 

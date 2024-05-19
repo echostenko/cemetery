@@ -11,7 +11,7 @@ namespace CodeBase.Infrastructure
 
         private void Awake()
         {
-            _game = new Game(new SceneLoader(this), fade);
+            _game = new Game(new SceneLoader(this), Instantiate(fade));
             _game.StateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);
